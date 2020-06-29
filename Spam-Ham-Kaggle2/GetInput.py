@@ -11,7 +11,7 @@ from sklearn.model_selection import cross_val_score, train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import precision_score, recall_score
 
-def getInput(url = 'input/emails_dataset.csv', number = 5000):
+def getCorpus(url = 'input/emails_dataset.csv', number = 5000):
     dataset = pd.read_csv(url)
     if number != 5000:
         dataset = dataset.sample(number) 

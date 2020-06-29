@@ -25,7 +25,7 @@
     <Compile Include="GetInput.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="gmail_api.py">
+    <Compile Include="Gmail_api.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Pineline.py">

@@ -1,12 +1,12 @@
 from sklearn.model_selection import cross_val_score, train_test_split
 from sklearn.metrics import precision_score, recall_score, accuracy_score
-import GetInput
-import Pineline
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn import svm
-import gmail_api
+from GetInput import getCorpus
+from Gmail_api import getMails
+from Pineline import frequency_pipeline
 import time
 import matplotlib.pyplot as plt
 
@@ -28,7 +28,7 @@ def SVM(X, y):
 
 def MNB(X, y):
     
-    X_augmented = Pineline.email_pipeline.fit_transform(X).toarray()
+    X_augmented = frequency_pipeline.fit_transform(X).toarray()
     
     start = time.time()
     clf = MultinomialNB()
@@ -47,7 +47,7 @@ def TrainModel():
     rates_mnb = []
     times_mnb = []
     for i in n:
-        X,y = GetInput.getInput(url = 'input/emails_dataset.csv', number = i)
+        X,y = getCorpus(url = 'input/emails_dataset.csv', number = i)
         print("N = ", y.shape)
         rate_svm, time_svm = SVM(X, y)
         rates_svm.append(rate_svm)
@@ -66,7 +66,7 @@ def TrainModel():
 def MyEmail(category = 'CATEGORY_UPDATES'):
     #['CATEGORY_UPDATES']
     X,y = GetInput.getInput(url = 'input/emails_dataset.csv', number = 5000)
-    mails = gmail_api.getMail(cate = category)
+    mails = getMails(cate = category)
     if mails is None:
         print("No mail in  category ",category)
         return
