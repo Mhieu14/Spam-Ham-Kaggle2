@@ -21,9 +21,6 @@ def SVM(X, y):
     scores = 100 * cross_val_score(clf, X_augmented, y, cv=5).mean()
     end = time.time()
 
-    print("SVM:")
-    print("Rate: {:.2f}%".format(scores))
-    print("Time(second): ", end - start)
     return scores, end - start
 
 def MNB(X, y):
@@ -35,30 +32,36 @@ def MNB(X, y):
     scores = 100 * cross_val_score(clf, X_augmented, y, cv=5).mean()
     end = time.time()
 
-    print("MNB")
-    print("Rate: {:.2f}%".format(scores))
-    print("Time(second): ", end - start)
     return scores, end - start
 
 def TrainModel():
     n = [200, 500, 1000, 2000, 5000]
-    rates_svm = []
-    times_svm = []
-    rates_mnb = []
-    times_mnb = []
+    list_rates_svm = []
+    list_times_svm = []
+    list_rates_mnb = []
+    list_times_mnb = []
     for i in n:
         X,y = getCorpus(url = 'input/emails_dataset.csv', number = i)
         print("N = ", y.shape)
+        #SVM
         rate_svm, time_svm = SVM(X, y)
-        rates_svm.append(rate_svm)
-        times_svm.append(time_svm)
+        print("SVM")
+        print("Rate: {:.2f}%".format(rate_svm))
+        print("Time(second): ", time_svm)
+        list_rates_svm.append(rate_svm)
+        list_times_svm.append(time_svm)
+        #MNB
         rate_mnb, time_mnb = MNB(X, y)
-        rates_mnb.append(rate_mnb)
-        times_mnb.append(time_mnb)
-    plt.plot(n, rates_svm, n, rates_mnb)
+        print("MNB")
+        print("Rate: {:.2f}%".format(rate_mnb))
+        print("Time(second): ", time_mnb)
+        list_rates_mnb.append(rate_mnb)
+        list_times_mnb.append(time_mnb)
+        print("\n")
+    plt.plot(n, list_rates_svm, n, list_rates_mnb)
     plt.axis([0, 6000, 70, 100])
     plt.show()
-    plt.plot(n, times_svm, n, times_mnb)
+    plt.plot(n, list_times_svm, n, list_times_mnb)
     plt.axis([0, 6000, 0, 60])
     plt.show()
     
@@ -83,7 +86,18 @@ def MyEmail(category = 'CATEGORY_UPDATES'):
     print("Spam rate: ", rate)
 
 def main():
-    MyEmail('SPAM')
+    while(1):
+        print('- Kết quả đánh giá mô hình - Press 1')
+        print('- Kiểm tra spam email trong gmail cá nhân - Press 2')
+        print('- Thoát - Press 3')
+        x = input()
+        if x == '1':
+            TrainModel()
+        if x == '2':
+            MyEmail('SPAM')
+        if x == '3':
+            break
+    
 
 if __name__ == "__main__":
     main()
